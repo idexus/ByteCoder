@@ -38,7 +38,7 @@ let structA = try! StructA(from: decoder)
 
 ## Decoding enums (binary flags)
 
-Declaration
+https://github.com/idexus/BinaryFlags
 
 ```swift
 enum TestFlags : UInt16, BinaryFlagBits {
