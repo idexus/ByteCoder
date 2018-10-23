@@ -40,6 +40,8 @@ let structA = try! StructA(from: decoder)
 
 https://github.com/idexus/BinaryFlags
 
+Declaration:
+
 ```swift
 enum TestFlags : UInt16, BinaryFlagBits {
     case flagA = 1
@@ -61,7 +63,7 @@ struct StructB : Codable {
 
 ## Decoding arrays
 
-Declaration
+Declaration:
 
 ```swift
 struct StructC : Encodable {
