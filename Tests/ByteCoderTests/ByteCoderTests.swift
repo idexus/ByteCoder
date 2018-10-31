@@ -2,10 +2,12 @@ import XCTest
 import BinaryFlags
 @testable import ByteCoder
 
-enum TestFlags : UInt16, BinaryFlagBits {
-    case flagA = 1
-    case flagB = 2
-    case flagC = 4
+struct FlagsOptionSet : OptionSet, Codable {
+    let rawValue: Int16
+    
+    static let flagA   = FlagsOptionSet(rawValue: 1 << 0)
+    static let flagB   = FlagsOptionSet(rawValue: 1 << 1)
+    static let flagC   = FlagsOptionSet(rawValue: 1 << 2)
 }
 
 struct StructA : Codable {
@@ -16,14 +18,14 @@ struct StructA : Codable {
 struct StructB : Codable {
     var stuctA: StructA
     var str: String
-    var flags: BinaryFlags<TestFlags>
+    var flags: FlagsOptionSet
 }
 
 struct StructC : Encodable {
     var count: Int
     var array: [StructA]
     var str: String
-    var flags: BinaryFlags<TestFlags>
+    var flags: FlagsOptionSet
 }
 
 extension StructC : Decodable {
@@ -49,12 +51,12 @@ final class ByteCoderTests: XCTestCase {
         
         let structB = StructB(stuctA: StructA(a: 7, b: 8),
                               str: "012",
-                              flags: BinaryFlags(.flagA, .flagC))
+                              flags: [.flagA, .flagC])
         
         var structC = StructC(count: 0,
                               array: [],
                               str: "0123",
-                              flags: BinaryFlags(.flagB))
+                              flags: [.flagB])
         
         structC.array.append(StructA(a: 1, b: 2))
         structC.array.append(StructA(a: 3, b: 4))
@@ -85,7 +87,7 @@ final class ByteCoderTests: XCTestCase {
         XCTAssertEqual(structB.stuctA.a, 7)
         XCTAssertEqual(structB.stuctA.b, 8)
         XCTAssertEqual(structB.str, "012")
-        XCTAssert(structB.flags == BinaryFlags(.flagA, .flagC))
+        XCTAssert(structB.flags == [.flagA, .flagC])
         
         data = [2, 0, 0, 0, 0, 0, 0, 0, 1, 2, 0, 3, 4, 0, 48, 49, 50, 51, 0, 2, 0]
         decoder = ByteDecoder(data: data)
@@ -98,7 +100,7 @@ final class ByteCoderTests: XCTestCase {
         XCTAssertEqual(structC.array[1].a, 3)
         XCTAssertEqual(structC.array[1].b, 4)
         XCTAssertEqual(structC.str, "0123")
-        XCTAssert(structC.flags == BinaryFlags(.flagB))
+        XCTAssert(structC.flags == .flagB)
     }
     
     static var allTests = [

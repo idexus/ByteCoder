@@ -11,14 +11,13 @@ let package = Package(
             targets: ["ByteCoder"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/idexus/BinaryFlags.git", from: "0.1.0")
     ],
     targets: [
         .target(
             name: "ByteCoder",
-            dependencies: ["BinaryFlags"]),
+            dependencies: []),
         .testTarget(
             name: "ByteCoderTests",
-            dependencies: ["ByteCoder", "BinaryFlags"]),
+            dependencies: ["ByteCoder"]),
     ]
 )

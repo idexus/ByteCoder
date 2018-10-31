@@ -26,7 +26,6 @@ Encoded data: [UInt8]
 print("data:", encoder.encodedData)
 ```
 
-
 ### Decoding
 
 ```swift
@@ -36,17 +35,19 @@ let decoder = ByteDecoder(data: data)
 let structA = try! StructA(from: decoder)
 ```
 
-## Decoding enums (binary flags)
+## OptionSet
 
-https://github.com/idexus/BinaryFlags
+Use `OptionSet` instead of `enum`.
 
 Declaration:
 
 ```swift
-enum TestFlags : UInt16, BinaryFlagBits {
-    case flagA = 1
-    case flagB = 2
-    case flagC = 4
+struct FlagsOptionSet : OptionSet, Codable {
+    let rawValue: Int16
+
+    static let flagA   = FlagsOptionSet(rawValue: 1 << 0)
+    static let flagB   = FlagsOptionSet(rawValue: 1 << 1)
+    static let flagC   = FlagsOptionSet(rawValue: 1 << 2)
 }
 
 struct StructA : Codable {
@@ -57,8 +58,9 @@ struct StructA : Codable {
 struct StructB : Codable {
     var stuctA: StructA
     var str: String
-    var flags: BinaryFlags<TestFlags>
+    var flags: FlagsOptionSet
 }
+
 ```
 
 ## Decoding arrays
@@ -70,7 +72,7 @@ struct StructC : Encodable {
     var count: Int
     var array: [StructA]
     var str: String
-    var flags: BinaryFlags<TestFlags>
+    var flags: FlagsOptionSet
 }
 
 extension StructC : Decodable {

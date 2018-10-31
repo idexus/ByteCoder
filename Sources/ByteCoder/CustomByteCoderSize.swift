@@ -7,17 +7,9 @@
 //
 
 import Foundation
-import BinaryFlags
-
 
 public protocol CustomByteCoderSize {
     var sizeForByteCoder: Int { get }
-}
-
-extension BinaryFlags : CustomByteCoderSize {
-    public var sizeForByteCoder: Int {
-        return MemoryLayout<Enum.RawValue>.size
-    }
 }
 
 extension Dictionary : CustomByteCoderSize where Value : Encodable {
