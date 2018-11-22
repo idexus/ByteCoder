@@ -1,5 +1,4 @@
 import XCTest
-import BinaryFlags
 @testable import ByteCoder
 
 struct FlagsOptionSet : OptionSet, Codable {
